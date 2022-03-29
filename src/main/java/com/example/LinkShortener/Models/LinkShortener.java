@@ -47,4 +47,9 @@ public class LinkShortener {
     public void setShortLink(String shortLink) {
         this.shortLink = shortLink;
     }
+
+    @Override
+    public String toString(){
+        return "Full Link: " + fullLink + '\n' + "Short Link: " + shortLink;
+    }
 }
