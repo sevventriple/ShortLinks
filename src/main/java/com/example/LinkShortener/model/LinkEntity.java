@@ -27,28 +27,6 @@ public class LinkEntity {
     }
 
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getFullLink() {
-        return fullLink;
-    }
-
-    public void setFullLink(String fullLink) {
-        this.fullLink = fullLink;
-    }
-
-    public String getShortLink() {
-        return shortLink;
-    }
-
-    public void setShortLink(String shortLink) {
-        this.shortLink = shortLink;
-    }
 
 }
