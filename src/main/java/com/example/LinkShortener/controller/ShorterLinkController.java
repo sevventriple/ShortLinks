@@ -1,44 +1,36 @@
 package com.example.LinkShortener.controller;
 
 import com.example.LinkShortener.model.LinkEntity;
-import com.example.LinkShortener.repository.LinkRepository;
-import com.example.LinkShortener.service.ShorterLinkService;
-import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import java.net.URI;
+@Tag(
+        name = "ShorterLinkController",
+        description = "контроллер предоставляющий основные методы для работы с короткими ссылками"
+)
+public interface ShorterLinkController {
 
-@AllArgsConstructor
-@RestController
-public class ShorterLinkController {
-    private ShorterLinkService shorterLinkService;
+    @Operation(
+            summary = "Создание новой сокращенной ссылки",
+            description = "Позволяет создать новую сокращенную ссылку из полной"
+    )
+    ResponseEntity<LinkEntity> createShortLink(@Parameter(description = "Полная ссылка") String fullLink);
 
-    @PostMapping(path = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<LinkEntity> createShortLink(String fullLink){
-        LinkEntity linkEntity = shorterLinkService.createLinkEntityWithSave(fullLink);
-        return linkEntity != null
-                ? new ResponseEntity<>(linkEntity, HttpStatus.OK)
-                : new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-    }
+    @Operation(
+            summary = "Переход по короткой ссылке",
+            description = "Позволяет перейти по полной ссылке, к которой привязана  данная короткая ссылка"
+    )
+    ResponseEntity<Void> redirect(@PathVariable @Parameter(description = "Сокращенная ссылка") String shortLink);
 
-    @GetMapping(path = "/{shortLink}")
-    public ResponseEntity<Void> redirect(@PathVariable String shortLink){
-        LinkEntity linkEntity = shorterLinkService.findByShortLink(shortLink);
-        return linkEntity != null
-                ? ResponseEntity.status(HttpStatus.FOUND).location(URI.create(linkEntity.getFullLink())).build()
-                : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    @PostMapping(path = "/getFullByShort")
-    public LinkEntity getFullLink(String shortLink){
-        return shorterLinkService.findByShortLink(shortLink);
-    }
+    @Operation(
+            summary = "Получить полную ссылку",
+            description = "Позволяет получить полную ссылку по привязанной к ней короткой ссылке"
+    )
+    LinkEntity getFullLink(@Parameter(description = "Сокращенная ссылка") String shortLink);
 }

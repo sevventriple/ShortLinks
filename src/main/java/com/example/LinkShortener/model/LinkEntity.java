@@ -8,12 +8,13 @@ import javax.persistence.*;
 @Table(name = "links")
 @Builder(toBuilder = true)
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
 @Setter
 @Getter
 public class LinkEntity {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "full_link")
@@ -21,12 +22,4 @@ public class LinkEntity {
 
     @Column(name = "short_link")
     private String shortLink;
-
-    public LinkEntity() {
-
-    }
-
-
-
-
 }
